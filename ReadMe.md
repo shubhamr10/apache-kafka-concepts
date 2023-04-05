@@ -282,3 +282,66 @@ echo dump | nc localhost 2181 | grep broker
 ```
 ---
 
+# Topic in Kafka
+
+> If you go the bin folder of kafka you will see `kafka-topics.sh`, this file is used to create a kafka topics.
+
+###  Creating a Topic
+Let's create a new topic called `myTopic` in our kafka. To create a topic you need to run the following:
+```shell
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --create --topic myTopic --partitions 1 --replication-factor 1
+```
+
+### Listing all topics
+```shell
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --list
+```
+### Describing the created topic "myTopic"
+```shell
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic myTopic
+```
+
+## Creating a Producer to send messages to a topic.
+
+In order to create a producer we use `kafka-console-producer.sh`.
+
+* To create a producer for a topic we use the following command:
+```shell
+bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic myTopic
+```
+
+## Creating a Consumer to consume a messages sent to a topic
+
+In order to create a consumer we use `kafka-console-consumer.sh` .
+
+* To create a consumer for a topic we use the following command:
+```shell
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic myTopic --from beginning
+```
+
+* To check which consumer group your consumer has been assigned to, you need to use `kafka-consumer-groups.sh` .
+```shell
+bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --list
+```
+This should output something like:
+```shell
+console-consumer-45727
+```
+
+* To describe a consumer group
+```shell
+bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group <consumer-group-name>
+```
+Example:
+```shell
+bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group console-consumer-45727
+```
+Output:
+```shell
+GROUP                  TOPIC           PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID                                           HOST            CLIENT-ID
+console-consumer-45727 myTopic         0          -               28              -               console-consumer-f549d812-0672-4926-a7a5-c3780461bfb0 /127.0.0.1      console-consumer
+
+```
+
+*Kafka by default creates an Topic to store the information about created consumers*.
+
