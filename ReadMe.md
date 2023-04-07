@@ -173,7 +173,7 @@ wget https://dlcdn.apache.org/zookeeper/zookeeper-3.8.1/apache-zookeeper-3.8.1-b
 ```
 * Unzip it using
 ```shell
-taz -xvf apache-zookeeper-3.8.1-bin.tar.gz
+tar -xvf apache-zookeeper-3.8.1-bin.tar.gz
 ```
 * Go to the config folder `cd conf/`
 * copy the `zoo_sample.cfg` file and rename it to `zoo.cfg` .
@@ -316,7 +316,7 @@ In order to create a consumer we use `kafka-console-consumer.sh` .
 
 * To create a consumer for a topic we use the following command:
 ```shell
-bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic myTopic --from beginning
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic myTopic --from-beginning
 ```
 
 * To check which consumer group your consumer has been assigned to, you need to use `kafka-consumer-groups.sh` .
@@ -343,5 +343,12 @@ console-consumer-45727 myTopic         0          -               28            
 
 ```
 
-*Kafka by default creates an Topic to store the information about created consumers*.
+*Kafka by default creates a Topic to store the information about created consumers*.
 
+* You can also assign a consumer to a consumer group manually.
+```shell
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic myTopic --from-beginning --group <consumer-group-name>
+```
+```shell
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic myTopic --from-beginning --group myConsumerGroup1
+```
