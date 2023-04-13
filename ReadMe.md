@@ -352,3 +352,46 @@ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic myTopic 
 ```shell
 bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic myTopic --from-beginning --group myConsumerGroup1
 ```
+
+---
+
+# Zookeeper Cluster Setup with 3zk Nodes
+
+![](zookeeper_cluster_3zk_nodes.png)
+
+* According to the zookeeper cluster documentation, is suggested to create the clusters in odd numbers such as 3, 5, 7, etc.
+* **Zookeeper cluster leader** is selected by voting done internally by the other zookeeper servers.
+
+## Installing Zookeeper Cluster with 3zkNodes.
+
+* Download the binary files as mentioned in the steps earlier.
+* Create 3 folders with the name `zkNode1`, `zkNode2` and `zkNode3` .
+* In the config folder, create `zoo.cfg` file and paste the following.
+```shell
+# tickTime means time in milliseconds
+tickTime=2000
+# initLimit means unit of time (tickTime) required to connect to the servers. 
+# 10 means 10 unit of tickTime = 10 * 2000 ms
+initLimit=10
+# syncLimit
+syncLimit=5
+dataDir=/tmp/zookeeper
+clientPort=2181
+maxClientCnxns=60
+4lw.commands.whitelist=*
+
+server.1=localhost:2788:3788
+server.2=localhost:2888:3888
+server.3=localhost:2988:3988
+
+```
+
+```shell
+mkdir /tmp/zookeeper-1
+mkdir /tmp/zookeeper-2
+mkdir /tmp/zookeeper-3
+echo 1 >> /tmp/zookeeper-1/myid
+echo 2 >> /tmp/zookeeper-2/myid
+echo 3 >> /tmp/zookeeper-3/myid
+
+```
